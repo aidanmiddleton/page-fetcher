@@ -2,17 +2,11 @@
 //use request library to make http request 
 //use nodes fs module to write the file to given local path
 //use callback function 
-
-
-const readline = require('readline');
 const fs = require('fs');
 const request = require('request');
 
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+
 
 const [link, filePath] = process.argv.slice(2, 4)
 
@@ -22,8 +16,11 @@ const fetch = function(url, filePath) {
   request(url, (error, response, body) => {
     console.log('error: ', error)
     console.log('body:', body)
+    console.log(filePath);
+    let stats = fs.statSync(filePath);
+    let bytes = stats["size"];
     fs.writeFile(filePath, body, 'utf8')
-    console.log('the file has been saved')
+    console.log(`the file has been saved, ${bytes} bytes transfered`)
   })
 }
 
